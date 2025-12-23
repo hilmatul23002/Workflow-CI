@@ -1,0 +1,70 @@
+name: ML Model CI Workflow
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build-and-train:
+    runs-on: ubuntu-latest
+
+    steps:
+    # =========================
+    # CHECKOUT REPOSITORY
+    # =========================
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    # =========================
+    # SETUP PYTHON 3.12.7
+    # =========================
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.12.7"
+
+    # =========================
+    # CHECK ENVIRONMENT
+    # =========================
+    - name: Check Python Environment
+      run: |
+        python --version
+        pip --version
+        pwd
+        ls -R
+
+    # =========================
+    # INSTALL DEPENDENCIES
+    # =========================
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    # =========================
+    # RUN ML MODELLING
+    # =========================
+    - name: Run ML Modelling
+      working-directory: modeling
+      run: |
+        python modeling_bg.py
+
+    # =========================
+    # GET MLFLOW RUN ID
+    # =========================
+    - name: Get MLflow Run ID
+      run: |
+        echo "Latest MLflow run ID:"
+        python - <<EOF
+        import mlflow
+        client = mlflow.tracking.MlflowClient()
+        experiment = client.get_experiment_by_name("CI_Modelling_Experiment")
+        runs = client.search_runs(
+            experiment_ids=[experiment.experiment_id],
+            order_by=["attributes.start_time DESC"],
+            max_results=1
+        )
+        print("MLFLOW_RUN_ID =", runs[0].info.run_id)
+        EOF
