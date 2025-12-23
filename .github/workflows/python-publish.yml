@@ -47,7 +47,7 @@ jobs:
     # RUN ML MODELLING
     # =========================
     - name: Run ML Modelling
-      working-directory: modeling
+      working-directory: MLproject
       run: |
         python modelling.py
 
