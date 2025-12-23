@@ -107,4 +107,12 @@ for model_name, model in models.items():
             f"R2={r2:.3f}"
         )
 
+        # training + log metric + log model
+        print("MLFLOW_RUN_ID=", run.info.run_id)
+
+        # SIMPAN KE FILE (UNTUK CI)
+        with open("run_id.txt", "w") as f:
+            f.write(run.info.run_id)
+
 print("Semua model berhasil ditraining & tercatat di MLflow")
+
