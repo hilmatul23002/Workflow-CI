@@ -49,7 +49,7 @@ jobs:
     - name: Run ML Modelling
       working-directory: modeling
       run: |
-        python modeling_bg.py
+        python modelling.py
 
     # =========================
     # GET MLFLOW RUN ID
@@ -68,3 +68,4 @@ jobs:
         )
         print("MLFLOW_RUN_ID =", runs[0].info.run_id)
         EOF
+
