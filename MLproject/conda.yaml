@@ -1,8 +1,0 @@
-# Membuat environment conda
-conda create --name msml python=3.12.7
-
-# Mengaktifkan environment
-conda activate msml
-
-# Menginstall library yang dibutuhkan
-pip install pandas scikit-learn mlflow
