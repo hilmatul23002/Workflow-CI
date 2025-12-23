@@ -24,7 +24,7 @@ mlflow.set_experiment("Modelling")
 # =========================
 # LOAD DATA (HASIL PREPROCESSING)
 # =========================
-df = pd.read_csv("E:\MSML\SMSML_Hilmatul-Luthfiyah-Hariroh\Membangun model\datasekolahsiap.csv")
+df = pd.read_csv("datasekolahsiap.csv")
 
 # =========================
 # VALIDASI DATA (WAJIB)
@@ -116,3 +116,4 @@ for model_name, model in models.items():
         )
 
 print("Semua model berhasil ditraining & tercatat di MLflow")
+
