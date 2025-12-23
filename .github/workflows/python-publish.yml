@@ -11,6 +11,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+
+    - name: Create mlruns directory
+      run: mkdir -p mlruns
+
     # =========================
     # CHECKOUT REPOSITORY
     # =========================
