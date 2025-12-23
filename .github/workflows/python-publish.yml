@@ -68,3 +68,27 @@ jobs:
         )
         print("MLFLOW_RUN_ID =", runs[0].info.run_id)
         EOF
+
+    # =========================
+    # POST SETUP PYTHON
+    # =========================
+    - name: Post Setup Python - Verify Environment
+      run: |
+        echo "=== Python & Pip Version ==="
+        python --version
+        pip --version
+    
+        echo "=== Python Path ==="
+        which python || where python
+    
+        echo "=== Pip Path ==="
+        which pip || where pip
+    
+        echo "=== Environment Variables ==="
+        python - << 'EOF'
+        import sys, site
+        print("Executable:", sys.executable)
+        print("Version:", sys.version)
+        print("Site-packages:", site.getsitepackages())
+        EOF
+
