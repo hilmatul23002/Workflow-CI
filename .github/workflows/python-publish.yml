@@ -55,13 +55,9 @@ jobs:
     # GET MLFLOW RUN ID
     # =========================
     - name: Get latest MLflow run id
+      working-directory: MLproject
       run: |
-        python -c "import mlflow; from mlflow.tracking import MlflowClient; \
-        mlflow.set_tracking_uri("file:./mlruns")
-        c=MlflowClient(); \
-        e=c.mlflow.set_experiment("Modelling")
-        print('MLFLOW_RUN_ID =', c.search_runs([e.experiment_id], order_by=['attributes.start_time DESC'], max_results=1)[0].info.run_id)"
-
+        cat run_id.txt
     # =========================
     # POST SETUP PYTHON
     # =========================
