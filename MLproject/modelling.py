@@ -24,7 +24,7 @@ mlflow.set_experiment("Modelling")
 # =========================
 # LOAD DATA (HASIL PREPROCESSING)
 # =========================
-df = pd.read_csv("datasekolahsiap.csv")
+df = pd.read_csv("E:\MSML\SMSML_Hilmatul-Luthfiyah-Hariroh\Membangun model\datasekolahsiap.csv")
 
 # =========================
 # VALIDASI DATA (WAJIB)
@@ -72,7 +72,7 @@ models = {
 # =========================
 for model_name, model in models.items():
 
-    with mlflow.start_run(run_name=model_name):
+    with mlflow.start_run(run_name=model_name) as run:
 
         # Train
         model.fit(X_train, y_train)
@@ -93,12 +93,20 @@ for model_name, model in models.items():
         mlflow.log_metric("mae", mae)
         mlflow.log_metric("r2_score", r2)
 
-        # Log model (VERSI BARU - TANPA WARNING)
+        # Log model
         mlflow.sklearn.log_model(
             sk_model=model,
             name="model"
         )
 
+        # PRINT RUN ID
+        print("MLFLOW_RUN_ID=", run.info.run_id)
+
+        # SIMPAN RUN ID KE FILE (UNTUK CI)
+        with open("run_id.txt", "w") as f:
+            f.write(run.info.run_id)
+
+        # PRINT HASIL
         print(
             f"{model_name} | "
             f"MSE={mse:.2f} | "
@@ -107,12 +115,4 @@ for model_name, model in models.items():
             f"R2={r2:.3f}"
         )
 
-        # training + log metric + log model
-        print("MLFLOW_RUN_ID=", run.info.run_id)
-
-        # SIMPAN KE FILE (UNTUK CI)
-        with open("run_id.txt", "w") as f:
-            f.write(run.info.run_id)
-
 print("Semua model berhasil ditraining & tercatat di MLflow")
-
