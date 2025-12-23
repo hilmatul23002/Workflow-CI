@@ -54,34 +54,13 @@ jobs:
     # =========================
     # GET MLFLOW RUN ID
     # =========================
-    - name: Get MLflow Run ID
+    - name: Get latest MLflow run id
       run: |
-        python << 'EOF'
-        import mlflow
-        from mlflow.tracking import MlflowClient
-    
-        # Tracking URI HARUS sesuai artifact_location
+        python -c "import mlflow; from mlflow.tracking import MlflowClient; \
         mlflow.set_tracking_uri("file:./mlruns")
-    
-        client = MlflowClient()
-    
-        # SESUAI meta.yaml → name: Default
-        experiment = client.get_experiment_by_name("Default")
-    
-        if experiment is None:
-            raise ValueError("Experiment 'Default' not found")
-    
-        runs = client.search_runs(
-            experiment_ids=[experiment.experiment_id],
-            order_by=["attributes.start_time DESC"],
-            max_results=1
-        )
-    
-        if not runs:
-            raise ValueError("No MLflow runs found in Default experiment")
-    
-        print("MLFLOW_RUN_ID =", runs[0].info.run_id)
-        EOF
+        c=MlflowClient(); \
+        e=c.mlflow.set_experiment("Modelling")
+        print('MLFLOW_RUN_ID =', c.search_runs([e.experiment_id], order_by=['attributes.start_time DESC'], max_results=1)[0].info.run_id)"
 
     # =========================
     # POST SETUP PYTHON
