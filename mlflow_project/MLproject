@@ -1,6 +1,11 @@
 name: latihan-cs-mlflow
  
-conda_env: conda.yaml
+name: my-project
+
+entry_points:
+  main:
+    command: "python modelling.py"
+
  
 entry_points:
   main:
