@@ -58,7 +58,7 @@ jobs:
     # =========================
     - name: Run MLflow project
       run: |
-        mlflow run mlflow_project
+        mlflow run mlflow_project --no-conda
 
     # =========================
     # GET MLFLOW RUN ID
