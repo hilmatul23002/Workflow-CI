@@ -29,11 +29,6 @@ else:
     dataset_path = "datasekolahsiap.csv"
 
 # =========================
-# KONFIGURASI MLFLOW
-# =========================
-mlflow.set_experiment("Modelling")
-
-# =========================
 # LOAD DATA
 # =========================
 df = pd.read_csv(dataset_path)
@@ -108,3 +103,4 @@ for model_name, model in models.items():
 os.environ.pop("MLFLOW_RUN_ID", None)
 os.environ["MLFLOW_ENABLE_SYSTEM_METRICS_LOGGING"] = "false"
 os.environ["GIT_PYTHON_REFRESH"] = "quiet"
+
