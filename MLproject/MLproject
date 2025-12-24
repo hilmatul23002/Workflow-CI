@@ -5,7 +5,7 @@ conda_env: conda.yaml
 entry_points:
   main:
     parameters:
-      n_estimators:
+      n_estimators: 100
         type: int
         default: 505
       max_depth:
