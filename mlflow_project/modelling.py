@@ -1,12 +1,16 @@
 import os
+import sys
 import pandas as pd
 import mlflow
 import mlflow.sklearn
 import numpy as np
 
 from sklearn.model_selection import train_test_split
+from sklearn.metrics import mean_squared_error   # ← WAJIB ADA
 from sklearn.linear_model import LinearRegression
 from sklearn.ensemble import RandomForestRegressor, GradientBoostingRegressor
+
+
 
 # =========================
 # SUPPRESS WARNING GIT
@@ -102,6 +106,7 @@ for model_name, model in models.items():
     )
 
     print(f"Model {model_name} berhasil dicatat | RMSE = {rmse}")
+
 
 
 
