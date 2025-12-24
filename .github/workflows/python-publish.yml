@@ -53,7 +53,7 @@ jobs:
     - name: Run MLflow Project
       working-directory: MLProject
       run: |
-           python modelling.py
+        python modelling.py
 
 
     # =========================
