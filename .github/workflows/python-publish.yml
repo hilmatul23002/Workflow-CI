@@ -16,13 +16,6 @@ jobs:
     - name: Create mlruns directory
       run: mkdir -p mlruns
 
-    - name: Setup Conda
-      uses: conda-incubator/setup-miniconda@v3
-      with:
-          python-version: 3.10
-          activate-environment: mlflow-env
-          environment-file: MLProject/conda.yaml
-
     # =========================
     # CHECKOUT REPOSITORY
     # =========================
