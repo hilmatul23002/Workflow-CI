@@ -82,31 +82,23 @@ models = {
 # TRAINING & LOGGING
 # =========================
 for model_name, model in models.items():
-    with mlflow.start_run(run_name=model_name):
 
-        model.fit(X_train, y_train)
-        y_pred = model.predict(X_test)
+    model.fit(X_train, y_train)
+    y_pred = model.predict(X_test)
 
-        mse = mean_squared_error(y_test, y_pred)
-        rmse = np.sqrt(mse)
-        mae = mean_absolute_error(y_test, y_pred)
-        r2 = r2_score(y_test, y_pred)
+    mse = mean_squared_error(y_test, y_pred)
+    rmse = np.sqrt(mse)
+    mae = mean_absolute_error(y_test, y_pred)
+    r2 = r2_score(y_test, y_pred)
 
-        mlflow.log_param("model_type", model_name)
-        mlflow.log_param("n_estimators", n_estimators)
-        mlflow.log_param("max_depth", max_depth)
+    mlflow.log_param(f"{model_name}_n_estimators", n_estimators)
+    mlflow.log_param(f"{model_name}_max_depth", max_depth)
 
-        mlflow.log_metric("mse", mse)
-        mlflow.log_metric("rmse", rmse)
-        mlflow.log_metric("mae", mae)
-        mlflow.log_metric("r2_score", r2)
+    mlflow.log_metric(f"{model_name}_mse", mse)
+    mlflow.log_metric(f"{model_name}_rmse", rmse)
+    mlflow.log_metric(f"{model_name}_mae", mae)
+    mlflow.log_metric(f"{model_name}_r2", r2)
 
-        mlflow.sklearn.log_model(model, "model")
+    mlflow.sklearn.log_model(model, f"model_{model_name}")
 
-        print(
-            f"{model_name} | "
-            f"MSE={mse:.2f} | RMSE={rmse:.2f} | "
-            f"MAE={mae:.2f} | R2={r2:.3f}"
-        )
-
-print("Semua model berhasil ditraining & tercatat di MLflow")
+    print(f"{model_name} selesai")
