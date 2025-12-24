@@ -82,13 +82,25 @@ models = {
 # TRAINING & LOGGING
 # =========================
 # JANGAN pakai start_run
-model.fit(X_train, y_train)
+for model_name, model in models.items():
+    # Train
+    model.fit(X_train, y_train)
 
-mlflow.log_param("model_type", model_name)
-mlflow.log_metric("rmse", rmse)
-mlflow.log_metric("mae", mae)
-mlflow.log_metric("r2", r2)
+    # Predict
+    y_pred = model.predict(X_test)
 
-mlflow.sklearn.log_model(model, "model")
+    # Metric
+    rmse = mean_squared_error(y_test, y_pred, squared=False)
+
+    # Log ke MLflow
+    mlflow.log_param("model_name", model_name)
+    mlflow.log_metric(f"{model_name}_rmse", rmse)
+
+    # Log model (INI AMAN)
+    mlflow.sklearn.log_model(
+        sk_model=model,
+        artifact_path=model_name
+    )
+
 
 
