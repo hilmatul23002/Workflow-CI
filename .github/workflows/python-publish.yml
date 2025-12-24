@@ -53,8 +53,7 @@ jobs:
     - name: Run MLflow Project
       working-directory: MLproject
       run: |
-        python modelling.py
-
+        mlflow run MLproject --env-manager=local 
 
     # =========================
     # GET MLFLOW RUN ID
