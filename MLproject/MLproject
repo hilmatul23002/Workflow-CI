@@ -1,18 +1,15 @@
 name: cs-mlflow-modelling
 
-conda_env: conda.yaml
-
 entry_points:
   main:
     parameters:
-      n_estimators: 100
+      n_estimators:
         type: int
-        default: 505
+        default: 100
       max_depth:
         type: int
-        default: 35
+        default: 5
       dataset:
         type: string
         default: "datasekolahsiap.csv"
     command: "python modelling.py {n_estimators} {max_depth} {dataset}"
-
