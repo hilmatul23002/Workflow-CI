@@ -15,6 +15,7 @@ jobs:
     - name: Create mlruns directory
       run: mkdir -p mlruns
 
+
     # =========================
     # CHECKOUT REPOSITORY
     # =========================
@@ -47,21 +48,45 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
+        
+    - name: Set MLflow tracking
+      run: |
+        echo "MLFLOW_TRACKING_URI=file:./mlruns" >> $GITHUB_ENV
+
     # =========================
     # RUN ML MODELLING
     # =========================
     - name: Run MLflow Project
       working-directory: MLproject
       run: |
-        mlflow run MLproject --env-manager=local 
+        mlflow run MLproject 
 
     # =========================
     # GET MLFLOW RUN ID
     # =========================
     - name: Get latest MLflow run id
-      working-directory: MLproject
       run: |
-        cat run_id.txt
+        python - <<EOF
+        from mlflow.tracking import MlflowClient
+    
+        client = MlflowClient(tracking_uri="file:./mlruns")
+        experiments = client.search_experiments()
+        exp_id = experiments[0].experiment_id
+    
+        runs = client.search_runs(
+            experiment_ids=[exp_id],
+            order_by=["attributes.start_time DESC"],
+            max_results=1
+        )
+    
+        run_id = runs[0].info.run_id
+        print("Latest run_id:", run_id)
+    
+        with open("run_id.txt", "w") as f:
+            f.write(run_id)
+        EOF
+
+        
     # =========================
     # POST SETUP PYTHON
     # =========================
