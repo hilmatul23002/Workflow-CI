@@ -11,6 +11,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+
+    - name: Create mlruns directory
+      run: mkdir -p mlruns
+
     # =========================
     # CHECKOUT REPOSITORY
     # =========================
@@ -46,26 +50,38 @@ jobs:
     # =========================
     # RUN ML MODELLING
     # =========================
-    - name: Run ML Modelling
-      working-directory: modeling
+    - name: Run ML Modelling with MLflow
+      working-directory: MLproject
       run: |
-        python modelling.py
+        mlflow run .
 
     # =========================
     # GET MLFLOW RUN ID
     # =========================
-    - name: Get MLflow Run ID
+    - name: Get latest MLflow run id
+      working-directory: MLproject
       run: |
-        echo "Latest MLflow run ID:"
-        python - <<EOF
-        import mlflow
-        client = mlflow.tracking.MlflowClient()
-        experiment = client.get_experiment_by_name("CI_Modelling_Experiment")
-        runs = client.search_runs(
-            experiment_ids=[experiment.experiment_id],
-            order_by=["attributes.start_time DESC"],
-            max_results=1
-        )
-        print("MLFLOW_RUN_ID =", runs[0].info.run_id)
+        cat run_id.txt
+    # =========================
+    # POST SETUP PYTHON
+    # =========================
+    - name: Post Setup Python - Verify Environment
+      run: |
+        echo "=== Python & Pip Version ==="
+        python --version
+        pip --version
+    
+        echo "=== Python Path ==="
+        which python || where python
+    
+        echo "=== Pip Path ==="
+        which pip || where pip
+    
+        echo "=== Environment Variables ==="
+        python - << 'EOF'
+        import sys, site
+        print("Executable:", sys.executable)
+        print("Version:", sys.version)
+        print("Site-packages:", site.getsitepackages())
         EOF
 
