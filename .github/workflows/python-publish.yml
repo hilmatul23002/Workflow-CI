@@ -58,7 +58,7 @@ jobs:
     # =========================
     - name: Run MLflow project
       run: |
-        mlflow run mlflow_project --no-conda
+        mlflow run mlflow_project --env-manager=local
 
     # =========================
     # GET MLFLOW RUN ID
