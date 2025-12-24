@@ -1,16 +1,13 @@
-name: latihan-cs-mlflow
- 
-name: my-project
+name: school-ml-project
 
-entry_points:
-  main:
-    command: "python modelling.py"
-
- 
 entry_points:
   main:
     parameters:
       n_estimators: {type: int, default: 100}
       max_depth: {type: int, default: 5}
-      dataset : {type: string, default: "datasekolahsiap.csv"}
-    command: "python modelling.py {n_estimators} {max_depth} {dataset}"
+      data_path: {type: str, default: datasekolahsiap.csv}
+    command: >
+      python modelling.py
+      {n_estimators}
+      {max_depth}
+      {data_path}
