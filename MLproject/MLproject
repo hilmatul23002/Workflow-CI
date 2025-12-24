@@ -1,0 +1,12 @@
+name: sekolah-modelling
+
+python_env:
+  requirements:
+    - mlflow
+    - pandas
+    - numpy
+    - scikit-learn
+
+entry_points:
+  main:
+    command: "modelling.py"
