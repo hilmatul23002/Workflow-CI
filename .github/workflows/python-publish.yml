@@ -58,7 +58,7 @@ jobs:
     # =========================
     - name: Run MLflow project
       run: |
-        mlflow run .
+        mlflow run mlflow_project
 
     # =========================
     # GET MLFLOW RUN ID
