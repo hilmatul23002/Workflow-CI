@@ -102,7 +102,9 @@ for model_name, model in models.items():
         sk_model=model,
         artifact_path=model_name
     )
-
-
-
-
+# =========================
+# FIX BUG MLFLOW PROJECTS + CI
+# =========================
+os.environ.pop("MLFLOW_RUN_ID", None)
+os.environ["MLFLOW_ENABLE_SYSTEM_METRICS_LOGGING"] = "false"
+os.environ["GIT_PYTHON_REFRESH"] = "quiet"
