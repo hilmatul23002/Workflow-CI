@@ -60,7 +60,6 @@ jobs:
     # =========================
     - name: Run ML Modelling with MLflow
       working-directory: MLproject
-      shell: bash -l {0} 
       run: |
         mlflow run .
 
