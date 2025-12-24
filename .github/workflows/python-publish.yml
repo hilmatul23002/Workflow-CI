@@ -56,10 +56,9 @@ jobs:
     # =========================
     # RUN ML MODELLING
     # =========================
-    - name: Run MLflow Project
-      working-directory: MLproject
+    - name: Run MLflow project
       run: |
-        mlflow run MLproject 
+        mlflow run .
 
     # =========================
     # GET MLFLOW RUN ID
