@@ -50,10 +50,10 @@ jobs:
     # =========================
     # RUN ML MODELLING
     # =========================
-    - name: Run ML Modelling
+    - name: Run ML Modelling with MLflow
       working-directory: MLproject
       run: |
-        python modelling.py
+        mlflow run .
 
     # =========================
     # GET MLFLOW RUN ID
