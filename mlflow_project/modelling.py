@@ -78,17 +78,30 @@ models = {
 # =========================
 # TRAINING (AUTOLOG ONLY)
 # =========================
+# =========================
+# TRAINING & LOGGING (FINAL)
+# =========================
 for model_name, model in models.items():
 
-    with mlflow.start_run(run_name=model_name) as run:
+    # Train
+    model.fit(X_train, y_train)
 
-        model.fit(X_train, y_train)
+    # Predict
+    y_pred = model.predict(X_test)
 
-        # Simpan run_id (untuk CI / CD)
-        with open("run_id.txt", "w") as f:
-            f.write(run.info.run_id)
+    # Metric
+    rmse = np.sqrt(mean_squared_error(y_test, y_pred))
 
-        print(f"{model_name} selesai | RUN_ID = {run.info.run_id}")
+    # Log ke MLflow (TANPA start_run)
+    mlflow.log_param(f"{model_name}_type", model_name)
+    mlflow.log_metric(f"{model_name}_rmse", rmse)
 
-print("Semua model berhasil ditraining dengan MLflow Autolog")
+    mlflow.sklearn.log_model(
+        sk_model=model,
+        artifact_path=f"model_{model_name}"
+    )
+
+    print(f"Model {model_name} berhasil dicatat | RMSE = {rmse}")
+
+
 
