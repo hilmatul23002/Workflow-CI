@@ -56,15 +56,23 @@ models = {
         random_state=42
     )
 }
+# 🔑 Ambil run_id yang dibuat oleh `mlflow run`
+parent_run_id = os.environ.get("MLFLOW_RUN_ID")
+
+if parent_run_id is None:
+    raise RuntimeError("MLFLOW_RUN_ID tidak ditemukan. Jalankan via `mlflow run`.")
 
 # =========================
 # TRAINING & LOGGING (FIXED)
 # =========================
-# Kita gunakan parent run yang sudah dibuat oleh 'mlflow run'
-with mlflow.start_run() as parent_run:
+# 🔗 ATTACH ke parent run (TIDAK membuat run baru)
+with mlflow.start_run(run_id=parent_run_id):
+
     for model_name, model in models.items():
-        # Gunakan nested=True agar setiap model punya sub-halaman sendiri
+
+        # 🔹 Nested run = sub-run (INI BOLEH)
         with mlflow.start_run(run_name=model_name, nested=True):
+
             # Train
             model.fit(X_train, y_train)
 
@@ -74,14 +82,13 @@ with mlflow.start_run() as parent_run:
             # Metric
             rmse = np.sqrt(mean_squared_error(y_test, y_pred))
 
-            # Log ke MLflow
+            # Logging
             mlflow.log_param("model_type", model_name)
             mlflow.log_metric("rmse", rmse)
 
-            # Log model
             mlflow.sklearn.log_model(
                 sk_model=model,
                 artifact_path=f"model_{model_name}"
             )
-            
-            print(f"Model {model_name} berhasil dicatat dengan RMSE: {rmse}")
+
+            print(f"Model {model_name} berhasil dicatat | RMSE = {rmse}")
