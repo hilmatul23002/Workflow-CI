@@ -31,7 +31,7 @@ mlflow.sklearn.autolog(
 # LOAD DATA
 # =========================
 df = pd.read_csv(
-    r"E:\MSML\SMSML_Hilmatul-Luthfiyah-Hariroh\Membangun model\datasekolahsiap.csv"
+    r"datasekolahsiap.csv"
 )
 
 # =========================
@@ -91,3 +91,4 @@ for model_name, model in models.items():
         print(f"{model_name} selesai | RUN_ID = {run.info.run_id}")
 
 print("Semua model berhasil ditraining dengan MLflow Autolog")
+
